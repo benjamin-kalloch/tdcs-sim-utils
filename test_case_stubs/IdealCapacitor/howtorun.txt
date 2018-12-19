@@ -1,0 +1,10 @@
+1) Create the mesh using GMSH
+    gmsh capacitor.geo -3 -optimize_netgen -o capacitor.msh -format msh2
+
+2) Convert the mesh to the OpenFOAM mesh format
+    gmshToFoam capacitor.msh
+    -> Note that as of OpenFOAM v6 only GMSH files up to file format version 2 can be converted. 
+
+3) execute the Allrun.sh script 
+
+4) Run the Allclean.sh script to cleanup the testcase

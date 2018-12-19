@@ -1,0 +1,50 @@
+\section{Setup}
+The pipeline employs two tools for the basic functionality: 1) The segmentation and post-processing of the segmentation images
+are realized in the Medical Image Processing And Visualization tool $($MIPAV$)$ \cite{mcauliffe2001medical} with the Java Imaging
+and Science Toolkit $($JIST$)$ \cite{lucas2010java} and the CBSTools. Their setup will not be further discussed here as it has
+been described before\footnote{https://figshare.com/s/f2e47b41e974ab67039b}\cite{kalloch2018semi}. 2) The OpenFOAM software
+package is used for setting up and simulating the test cases, i.e. the tdcs simulations. We will shortly describe where to obtain
+this package, which other software is required and how to set everything up.
+
+\subsection{System requirements}
+\paragraph{Hardware}
+The workflow was tested on a workstation equipped with a 4-core Intel\textsuperscript{\textregistered}~Core\texttrademark~i7 6700
+processor clocked at 3,4 GHz with 32 GB of main memory and a 512 GB SSD drive. Major parts of the pipeline including the volume
+meshing as well as the solver application are not parallelized. For that reason, a processor with a high single-thread performance
+is preferred over a multi-processor system. In addition, both during segmentation as well as during the actual simulation intermediate
+results are written and re-read from the hard drive. Therefore, fast storage such as an SSD drive positively influences the
+processing speed. Storage requirements for a complete run of the pipeline with all intermediate results amount to approximately
+30 GB which can be reduced if intermediate results are discarded after successful completion of the respective processing step.
+
+\paragraph{Software}
+The software pipeline is confirmed to work on Ubuntu 16.04 LTS and Ubuntu 18.04 LTS, but more recent versions of Ubuntu should
+work as well.
+
+\subsection{Meshing - CGAL, GMSH}
+We provide a custom application implementing the API of CGAL version 4.12. In Ubuntu 18.10 the correct version can be obtained
+using the apt package manager. For all other systems that may not provide the proper version we provide a docker file that creates
+a docker container which is capable of compiling and running the application.\\
+Furthermore, GMSH version 3.0.6 is required as well to export the volume mesh in the GMSH file format. Please download the source
+code from \url{http://gmsh.info/src/gmsh-3.0.6-source.tgz}. 
+
+\subsection{Electrode Modeling \& Positioning - Blender}
+The modeling and positioning of the electrodes in implemented as a plugin for the 3D modeling software Blender. The plugin is
+confirmed to work up to version 2.79b which you can install using the apt package manager or download it from 
+\url{https://www.blender.org/download/Blender2.79/blender-2.79b-linux-glibc219-x86\_64.tar.bz2/}.
+
+\subsection{Test case setup \& Postprocessing - OpenFOAM}
+OpenFOAM version 6 provides the framework for the setup and execution of the simulation test cases. Since we extend the package
+with a custom solver application you will need the source code of OpenFOAM and compile it. You can download the source code of
+OpenFOAM 6 here \url{http://dl.openfoam.org/source/6}. For the post-processing functionality, especially ParaView version 5.4,
+please download the "Third Party" software package as well \url{http://dl.openfoam.org/source/6}. Again, since we provide
+custom plugins for ParaView you need the source code of ParaView and compile it.
+
+\subsection{Processing of diffusion-weighted data}
+Our pipeline allows the use of diffusion-weighted (DWI) data for conductivity tensor estimation. To process DWI data, we use
+MRTrix3 which can be obtained from \url{http://www.mrtrix.org/download/}. For MRTrix to work properly you will also need
+the FMRIB Software Library (FSL) \url{https://fsl.fmrib.ox.ac.uk/fsldownloads\_registration} and the Advanced Normalization Tools
+which can be downloaded here \url{https://stnava.github.io/ANTs/}.\\
+In addition, we provide plugins for ParaView v.5.4 that implement the computation of the conductivity tensors. The version of
+ParaView that is distributed with OpenFOAM is sufficient for that purpose. For some manual tasks functionality of MIPAV is required.
+
+

@@ -1,0 +1,112 @@
+%++++++++++++++++++++preamble+++++++++++++++++++++++++
+\documentclass[a4paper,12pt, oneside]{article}
+\renewcommand{\baselinestretch}{1.5}                    % 1.5 line spacing
+
+% miscellaneous settings
+\usepackage[utf8]{inputenc}                              % neccesarry to recognize ä,ö,ü etc.
+\usepackage[margin=3cm]{geometry}                        % set borders to 3 cm each
+%\usepackage[english,ngerman]{babel}                      % make us of german language for macros as '\today'
+\usepackage[hyphens]{url}                                % used for url-sources in BibTeX-file
+\usepackage{fancyhdr}                                    % used for the headers
+%\usepackage{amsfonts}                                    % used to diplay N, R or other number sets
+%\usepackage{amsmath}                                     % used for automatically numbered equations
+%\usepackage{icomma}
+\usepackage{graphicx}                                    % to include external pictures
+\usepackage{float}                                       % used for 'floating figures', figures that are placed in the document at the same location as they are placed in code
+\usepackage{caption}                                     % needed to be able to use subfigures
+\usepackage{subcaption}                                  % -"-
+\graphicspath{ {./images/} }                              % set directory that contains the images
+%\usepackage{array}                                       % for definition of equation variables as captions
+%\usepackage[toc,page]{appendix}
+%\usepackage{pdflscape}                                      % set certain pages in landscape mode
+%\usepackage{pdfpages}                                    % include external PDFs
+\usepackage{tikz}
+\usepackage[utf8]{inputenc}
+
+\usepackage{enumitem}
+\usepackage{amsmath}
+
+
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref} % enable hyperlinks in toc, pass options from url package to avoid conflicts (hyperref-package loads the url package internally as well)
+
+% toc & headline settings
+%\numberwithin{equation}{section}                    % number equations according to the numbering of the subsection they occur at
+\hypersetup{linktoc=all}                            % toc entries are hyperlinks to the according pages
+\setcounter{secnumdepth}{3}                         % let LaTeX also number paragraphs
+\setcounter{tocdepth}{3}                            % let LaTeX numer paragraphs in the table-of-contents as well
+
+% create new command to hide certain sections, subsections etc. from toc
+\newcommand{\nocontentsline}[3]{}
+\newcommand{\tocless}[2]{\bgroup\let\addcontentsline=\nocontentsline#1{#2}\egroup}
+
+% draw a folder icon
+\newcommand{\foldericon}{{\tikz[scale=0.3]{%
+  \draw (0,0) -- (0,0.8) -- (0.2,1)  -- (0.7,1) -- (0.7,0.8) -- (1,0.8) -- (1,0) -- cycle;
+}}}
+
+% definitions of the repository tree list
+\newcommand{\FTdir}{}
+\def\FTdir(#1,#2,#3){%
+  %\FTfile(#1,{{\char"1F5BF}\hspace{0.2em}#3})
+  \FTfile(#1,{{\foldericon}\hspace{0.2em}#3})
+  (tmp.west)++(0.8em,-0.4em)node(#2){}
+  (tmp.west)++(1.5em,0)
+  ++(0,-1.3em) 
+}
+
+\newcommand{\FTfile}{}
+\def\FTfile(#1,#2){%
+  node(tmp){}
+  (#1|-tmp)++(0.6em,0)
+  node(tmp)[anchor=west,black]{\tt #2}
+  (#1)|-(tmp.west)
+  ++(0,-1.2em) 
+}
+
+\newcommand{\FTroot}{}
+\def\FTroot{tmp.west}
+
+\begin{document}
+
+%++++++++++++++++begin of the document+++++++++++++++
+\input{./titlepage.tex}
+
+\newpage
+
+\tableofcontents
+\thispagestyle{empty}
+\cleardoublepage                                    % skip to next page
+
+% some styling concering the page-layout of the main text
+\pagestyle{fancy}                                   % use the package 'fancy' for header/footer decoration
+\lhead{\leftmark}                                   % display the section's name on the left side of the header
+\rhead{\rightmark}                                  % display the subsection's name on the right side of the header
+\renewcommand{\subsectionmark}[1]{\markright{#1}}   % disable the numbering of subsections in the header
+
+\thispagestyle{plain}                               % use custom heading style for the first page of this section
+\setcounter{page}{1}                                % reset page-counter
+
+\input{./introduction.tex}
+
+\newpage
+
+\input{./setup.tex}
+
+\newpage
+
+\input{./repository.tex}
+
+\newpage
+
+\input{./pipeline.tex}
+
+\newpage
+
+\pagestyle{plain}
+
+\setcounter{page}{1}                                % reset page-counter
+\pagenumbering{Roman}
+\bibliographystyle{alpha}
+\bibliography{sources}
+    
+\end{document}

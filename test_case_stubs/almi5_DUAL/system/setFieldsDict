@@ -1,0 +1,97 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+	version	2.0;
+	format	ascii;
+	class	dictionary;
+	object	setFieldsDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+defaultFieldValues
+(
+	volScalarFieldValue sigma 1e-15
+);
+
+regions
+(
+	zoneToCell
+	{	
+		name cellZone_4;    // skin
+
+		fieldValues
+		(
+			volScalarFieldValue sigma 0.465
+		);
+	}
+
+	zoneToCell
+	{	
+		name cellZone_0;    // skull
+
+		fieldValues
+		(
+			volScalarFieldValue sigma 0.01
+		);
+	}
+
+	zoneToCell
+	{	
+		name cellZone_1;    // CSF
+
+		fieldValues
+		(
+			volScalarFieldValue sigma 1.654
+		);
+	}
+
+	zoneToCell
+	{	
+		name cellZone_2;    // grey matter
+
+		fieldValues
+		(
+			volScalarFieldValue sigma 0.275
+		);
+	}
+	
+	zoneToCell
+	{	
+		name cellZone_3;    // white matter
+
+		fieldValues
+		(
+			volScalarFieldValue sigma 0.126
+		);
+	}
+
+	zoneToCell
+	{	
+		name cellZone_5;    // electrodes
+
+		fieldValues
+		(
+			volScalarFieldValue sigma 1.0
+        );
+	}
+	
+	zoneToCell
+	{	
+		name cellZone_6;    // electrodes
+
+		fieldValues
+		(
+			volScalarFieldValue sigma 1.0
+        );
+	}
+);
+
+// *************************************************************************** //

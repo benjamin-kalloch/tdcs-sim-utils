@@ -1,0 +1,178 @@
+\section{Structure of the Repository}
+This repository consists of several version controlled sub-modules. To update the submodules run ``git submodule update".
+Please refer to the following tree list for an overview of the directory structure of the repository and its submodules.
+In the next sections, when discussing the individual stages of the pipeline we will refer to that files. 
+
+\begin{tikzpicture}%
+  \draw[color=black!60!white]
+  \FTdir(\FTroot,root,tDCS-Pipeline){     % root: parent = \FTroot
+    \FTdir(root,solver,TDCSSolver){       % normal dir: (parentID, currentID, label)
+      \FTdir(solver,solver-maker,Make){}
+      \FTfile(solver,TDCSSolver.C)        % file:       (parentID, label)
+      \FTfile(solver,createFields.H)      % file:       (parentID, label)
+    }
+
+    ++(0,-0.5em)  % additional space if neded
+
+    \FTdir(root,electrode,MountElectrode) {
+        \FTfile(electrode,mountElectrode.py)
+      }
+  
+    ++(0,-0.5em)
+    
+    \FTdir(root,meshing,MeshHeadModel) {
+        \FTdir(meshing,meshing-deploy,deploy){
+            \FTdir(meshing-deploy,meshing-input,input){}
+            \FTdir(meshing-deploy,meshing-ouput,output){}
+            \FTfile(meshing-deploy,runMeshingTool.sh)
+        }
+        \FTdir(meshing,meshing-docker,docker){
+            \FTfile(meshing-docker,Dockerfile)
+            \FTfile(meshing-docker,docker\_compile.sh)
+            \FTfile(meshing-docker,docker\_run.sh)
+        }
+        \FTfile(meshing,CMakeLists.txt)
+        \FTfile(meshing,mesh\_head\_model.cpp)
+    }
+
+    ++(0,-0.5em)
+    
+    \FTdir(root,tensorfilter,PVDiffusionToConductivityTensor){
+        \FTfile(tensorfilter,CMakeLists.txt)
+        \FTfile(tensorfilter,plugin.cmake)
+        \FTfile(tensorfilter,pqDiffusionToConductivityTensorPanel.cxx)
+        \FTfile(tensorfilter,pqDiffusionToConductivityTensorPanel.h)
+        \FTfile(tensorfilter,vtkDiffusionToConductivityTensorFilter.cxx) 
+        \FTfile(tensorfilter,vtkDiffusionToConductivityTensorFilter.h) 
+        \FTfile(tensorfilter,vtkDiffusionToConductivityTensorFilter\_SM.xml) 
+    }
+
+    ++(0,-0.5em)
+
+    \FTdir(root,tensorfilter,PVSymMatrixToGenMatrx){
+        \FTfile(tensorfilter,CMakeLists.txt)
+        \FTfile(tensorfilter,plugin.cmake)
+        \FTfile(tensorfilter,pqSymToGenMatrixPanel.cxx)
+        \FTfile(tensorfilter,pqSymToGenMatrixPanel.h)
+        \FTfile(tensorfilter,vtkSymToGenMatrixFilter.cxx) 
+        \FTfile(tensorfilter,vtkSymToGenMatrixFilter.h) 
+        \FTfile(tensorfilter,vtkSymToGenMatrixFilter\_SM.xml) 
+    }
+  };
+\end{tikzpicture}
+
+
+\begin{tikzpicture}%
+  \draw[color=black!60!white]
+  \FTdir(\FTroot,root,tDCS-Pipeline){
+    \FTdir(root,tensorfilter,PVSaveOFField){
+        \FTfile(tensorfilter,CMakeLists.txt)
+        \FTfile(tensorfilter,plugin.cmake)
+        \FTfile(tensorfilter,FieldTemplate.cxx)
+        \FTfile(tensorfilter,FieldTemplate.h)
+        \FTfile(tensorfilter,TemplateString.h)
+        \FTfile(tensorfilter,pqSaveOFField.cxx)
+        \FTfile(tensorfilter,pqSaveOFField.h)
+        \FTfile(tensorfilter,vtkSaveOFField.cxx) 
+        \FTfile(tensorfilter,vtkSaveOFField.h) 
+        \FTfile(tensorfilter,vtkSaveOFField\_SM.xml) 
+    }
+
+    ++(0,-0.5em)
+
+    \FTdir(root,utils,Utils){
+        \FTdir(utils,docs,documents){
+            \FTdir(docs,doc-imgs,images){}
+            \FTdir(docs,doc-out,output){
+                \FTfile(doc-out,Location of this document)
+            }
+        }
+        \FTdir(utils,scripts,scripts){
+            \FTfile(scripts,mapToFOAMField.py)
+        }
+        \FTdir(utils,cases,test\_case\_stubs){
+            \FTdir(cases,almi-dual,almi5\_DUAL){
+                \FTdir(almi-dual,almi-dual-0,0\_orig){
+                    \FTfile(almi-dual-0,sigma)
+                    \FTfile(almi-dual-0,ElPot)
+                }
+                \FTdir(almi-dual,almi-dual-const,constant){}
+                \FTdir(almi-dual,almi-dual-sys,system){
+                    \FTfile(almi-dual-sys,controlDict)
+                    \FTfile(almi-dual-sys,fvSolution)
+                    \FTfile(almi-dual-sys,fvSchemes)
+                    \FTfile(almi-dual-sys,setFieldsDict)
+                    \FTfile(almi-dual-sys,solverProperties)
+                }
+            }
+        }
+    }
+  };
+\end{tikzpicture}
+
+\newpage
+
+\begin{tikzpicture}%
+  \draw[color=black!60!white]
+  \FTdir(\FTroot,root,tDCS-Pipeline){
+
+    \FTdir(root,utils,Utils){
+        \FTdir(utils,cases,test\_case\_stubs){
+            \FTdir(cases,almi-hdtdcs,almi5\_HDTDCS){
+                \FTdir(almi-hdtdcs,almi-hdtdcs-0,0\_orig){
+                    \FTfile(almi-hdtdcs-0,sigma)
+                    \FTfile(almi-hdtdcs-0,ElPot)
+                }
+                \FTdir(almi-hdtdcs,almi-hdtdcs-const,constant){}
+                \FTdir(almi-hdtdcs,almi-hdtdcs-sys,system){
+                    \FTfile(almi-hdtdcs-sys,controlDict)
+                    \FTfile(almi-hdtdcs-sys,fvSolution)
+                    \FTfile(almi-hdtdcs-sys,fvSchemes)
+                    \FTfile(almi-hdtdcs-sys,setFieldsDict)
+                    \FTfile(almi-hdtdcs-sys,solverProperties)
+                }
+            }
+
+            ++(0,-0.5em)
+
+            \FTdir(cases,pointcharge,CenteredPointCharge){
+                \FTdir(pointcharge,pointcharge-0,0\_orig){
+                    \FTfile(pointcharge-0,sigma)
+                    \FTfile(pointcharge-0,ElPot)
+                }
+                \FTdir(pointcharge,pointcharge-const,constant){}
+                \FTdir(pointcharge,pointcharge-sys,system){
+                    \FTfile(pointcharge-sys,controlDict)
+                    \FTfile(pointcharge-sys,fvSolution)
+                    \FTfile(pointcharge-sys,fvSchemes)
+                    \FTfile(pointcharge-sys,setFieldsDict)
+                    \FTfile(pointcharge-sys,solverProperties)
+                }
+                \FTfile(pointcharge,Allrun.sh)
+                \FTfile(pointcharge,Allclean.sh)
+                \FTfile(pointcharge,pointcharge.geo)
+            }
+
+            ++(0,-0.5em)
+
+            \FTdir(cases,capacitor,IdealCapacitor){
+                \FTdir(capacitor,capacitor-0,0\_orig){
+                    \FTfile(capacitor-0,sigma)
+                    \FTfile(capacitor-0,ElPot)
+                }
+                \FTdir(capacitor,capacitor-const,constant){}
+                \FTdir(capacitor,capacitor-sys,system){
+                    \FTfile(capacitor-sys,controlDict)
+                    \FTfile(capacitor-sys,fvSolution)
+                    \FTfile(capacitor-sys,fvSchemes)
+                    \FTfile(capacitor-sys,setFieldsDict)
+                    \FTfile(capacitor-sys,solverProperties)
+                }
+                \FTfile(capacitor,Allrun.sh)
+                \FTfile(capacitor,Allclean.sh)
+                \FTfile(capacitor,idealcapacitor.geo)
+            }
+        }
+    }
+  };
+\end{tikzpicture}

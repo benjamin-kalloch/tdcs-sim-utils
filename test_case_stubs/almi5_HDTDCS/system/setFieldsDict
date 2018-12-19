@@ -1,0 +1,149 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+	version	2.0;
+	format	ascii;
+	class	dictionary;
+	object	setFieldsDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+defaultFieldValues
+(
+	volTensorFieldValue sigma ( 1e-15 0     0
+                                0     1e-15 0
+                                0     0     1e-15 )
+);
+
+regions
+(
+	zoneToCell
+	{	
+		name cellZone_4;    // skin
+
+		fieldValues
+		(
+			volTensorFieldValue sigma ( 0.465 0     0
+                                        0     0.465 0
+                                        0     0     0.465 )
+		);
+	}
+
+	zoneToCell
+	{	
+		name cellZone_0;    // skull
+
+		fieldValues
+		(
+			volTensorFieldValue sigma ( 0.01 0    0
+                                        0    0.01 0
+                                        0    0    0.01 )
+		);
+	}
+
+	zoneToCell
+	{	
+		name cellZone_1;    // CSF
+
+		fieldValues
+		(
+			volTensorFieldValue sigma ( 1.654 0     0
+                                        0     1.654 0
+                                        0     0     1.654 )
+		);
+	}
+
+	zoneToCell
+	{	
+		name cellZone_2;    // grey matter
+
+		fieldValues
+		(
+			volTensorFieldValue sigma ( 0.275 0     0
+                                        0     0.275 0
+                                        0     0     0.275 )
+		);
+	}
+	
+	zoneToCell
+	{	
+		name cellZone_3;    // white matter
+
+		fieldValues
+		(
+			volTensorFieldValue sigma ( 0.126 0     0
+                                        0     0.126 0
+                                        0     0     0.126 )
+		);
+	}
+	
+	zoneToCell
+	{	
+		name cellZone_5;    // electrodes
+
+		fieldValues
+		(
+			volTensorFieldValue sigma ( 1.0 0   0
+                                        0   1.0 0
+                                        0   0   1.0 )
+        );
+	}
+	
+	zoneToCell
+	{	
+		name cellZone_6;    // electrodes
+
+		fieldValues
+		(
+			volTensorFieldValue sigma ( 1.0 0   0
+                                        0   1.0 0
+                                        0   0   1.0 )
+        );
+	}
+
+	zoneToCell
+	{	
+		name cellZone_7;    // electrodes
+
+		fieldValues
+		(
+			volTensorFieldValue sigma ( 1.0 0   0
+                                        0   1.0 0
+                                        0   0   1.0 )
+        );
+	}
+
+	zoneToCell
+	{	
+		name cellZone_8;    // electrodes
+
+		fieldValues
+		(
+			volTensorFieldValue sigma ( 1.0 0   0
+                                        0   1.0 0
+                                        0   0   1.0 )
+        );
+	}
+
+	zoneToCell
+	{	
+		name cellZone_9;    // electrodes
+
+		fieldValues
+		(
+			volTensorFieldValue sigma ( 1.0 0   0
+                                        0   1.0 0
+                                        0   0   1.0 )
+        );
+	}
+);
+
+// *************************************************************************** //
