@@ -172,7 +172,10 @@ simplification". Finally ``Export Mesh as" an OFF file under the File menu.
                       electrode definitions (OFF file) \newline
                       \emph{Option 2)} Labeled image containing all segmented head structures but the skin
                       structure (ANALYZE file) +  smooth surface representation of the skin (OFF file)
-                      + electrode definitions (OFF file) \\
+                      + electrode definitions (OFF file) 
+                      \emph{Option 3)} Labeled image containing some irregular structures (e.g. lesioned tissue) (ANALYZE file) + 
+                      surface representation of other tissue structures (e.g. skin, skull, CSF, GM, WM) (OFF file) +
+                      electrode definitions (OFF file)\\
     \hline
     \textbf{Output} & Tetrahedral volume mesh of the head with the electrodes mounted, boundaries of the
                       electrodes represented as ``Physical Surfaces" (GMSH file format v2). \\
@@ -184,9 +187,9 @@ simplification". Finally ``Export Mesh as" an OFF file under the File menu.
 
 \hspace{0.5cm}
 
-The volume mesh generation is implemented as a C++ tool using the API of CGAL v. 4.12 and GMSH v. 3.0.6.
+The volume mesh generation is implemented as a C++ tool using the API of CGAL v. 4.13 and GMSH v. 3.0.6.
 Follow the instructions of the README file of the MeshHeadModel submodule to compile the application.
-For convenience, we provide a Docker file that creates a Docker container based on Ubuntu 18.10
+For convenience, we provide a Docker file that creates a Docker container based on Ubuntu 19.04
 that contains all required dependencies. You can then compile and execute the application within the container
 using the two provided scripts. All that is left to do in that case is to adapt the paths and container name
 in the scripts to your configuration and to download, extract and compile the GMSH source code.\par
@@ -200,8 +203,8 @@ input images do not need to adhere any special constraints in terms of the topol
 structure. The individual mesh compartments are named in a numerically increasing order representing the
 order of their corresponding labels in the input image file. For compatibility with OpenFOAM, the boundary
 of the generated mesh compartments are not explicitly saved when exporting the mesh to the GMSH file
-format meaning that no boundary surface (in GMSH terminology: 'Physical Surface') of the structures present
-in the input image will present. The reason for this is when converting the GMSH mesh into the OpenFOAM file
+format meaning that no separate boundary surface (in GMSH terminology: 'Physical Surface') of the structures
+in the input image will be generated. The reason for this is when converting the GMSH mesh into the OpenFOAM file
 format any preserved boundaries will be converted to an OpenFOAM 'patch' at which boundary conditions may be
 defined. However, by definition mesh boundaries or 'patches' must only be defined at the outer boundary of
 the mesh. A definition of an internal 'patch' is invalid and will raise a warning during conversion.\par
@@ -222,6 +225,22 @@ corresponding smooth electrodes. You must specify the path to the smooth skin su
 this case, the order of mesh compartments is as follows: image-based structures $\Rightarrow$ smooth
 skin $\Rightarrow$ electrodes. Again, the boundary surface of the skin compartment is not exported to the
 GMSH file format to avoid incompatibilities in OpenFOAM.\par
+Finally, if your application requires a more precise approximation of the boundaries of the structures than
+it is achieved using the image-based meshing approach you may provide the surface definitions of additional
+internal structures (as OFF files) which will then be meshed using the surface-based meshing approach. Note
+that these surfaces must be of very good quality. We recommend the tool \emph{MeshFix} by Marco Attenne
+\cite{attene2010lightweight} to ensure an appropriate surface mesh quality. The order of the provided surfaces
+must begin with the most outer structure (i.e. usually this will be the skin surface) and it must end with
+the most inner structure (e.g. the gray matter structure). Additional inner structures may still be represented
+using a labeled image, for example, to represent lesioned tissue or the ventricles. A typical use case is to
+create the volume mesh based on surfaces for the typical structures (electrodes, skin, skull, cerebrospinal
+fluid, gray matter, white matter) and add irregular tissue such as lesioned tissue by providing a corresponding
+labeled image. It is completely unproblematic if the structures in the image intersect the provided surfaces
+in the final volume mesh. The intersection will also be visible in the final mesh. In the final volume mesh,
+the order of mesh compartments is as follows: image-based structures $\Rightarrow$ skin $\Rightarrow$ skull
+$\Rightarrow$ csf $\Rightarrow$ gm $\Rightarrow$ wm $\Rightarrow$ electrodes. Again, only the boundary surfaces
+of the electrodes is exported to the GMSH file format to avoid incompatibilities in OpenFOAM.\par
+
 \begin{figure}[H]
    \centering
    \includegraphics[width=0.5\textwidth]{gmsh}
