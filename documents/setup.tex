@@ -9,15 +9,15 @@ this package, which other software is required and how to set everything up.
 \subsection{System requirements}
 \paragraph{Hardware}
 The workflow was tested on a workstation equipped with a 4-core Intel\textsuperscript{\textregistered}~Core\texttrademark~i7 6700
-processor clocked at 3,4 GHz with 32 GB of main memory and a 512 GB SSD drive. Major parts of the pipeline including the volume
+processor clocked at 3,4 GHz with 32 GB of main memory and a 512 GB SSD drive. Major parts of the workflow including the volume
 meshing as well as the solver application are not parallelized. For that reason, a processor with a high single-thread performance
 is preferred over a multi-processor system. In addition, both during segmentation as well as during the actual simulation intermediate
 results are written and re-read from the hard drive. Therefore, fast storage such as an SSD drive positively influences the
-processing speed. Storage requirements for a complete run of the pipeline with all intermediate results amount to approximately
+processing speed. Storage requirements for a complete run of the workflow with all intermediate results amount to approximately
 30 GB which can be reduced if intermediate results are discarded after successful completion of the respective processing step.
 
 \paragraph{Software}
-The software pipeline is confirmed to work on Ubuntu 16.04 LTS and Ubuntu 18.04 LTS, but more recent versions of Ubuntu should
+The software workflow is confirmed to work on Ubuntu 16.04 LTS and Ubuntu 18.04 LTS, but more recent versions of Ubuntu should
 work as well.
 
 \subsection{Meshing - CGAL, GMSH}
@@ -55,7 +55,7 @@ version 5.4, please download the "Third Party" software package as well \url{htt
 provide custom plugins for ParaView you need the source code of ParaView and compile it.
 
 \subsection{Processing of diffusion-weighted data}
-Our pipeline allows the use of diffusion-weighted (DWI) data for conductivity tensor estimation. To process DWI data, we use
+Our workflow allows the use of diffusion-weighted (DWI) data for conductivity tensor estimation. To process DWI data, we use
 MRTrix3 which can be obtained from \url{http://www.mrtrix.org/download/}. For MRTrix to work properly you will also need
 the FMRIB Software Library (FSL) \url{https://fsl.fmrib.ox.ac.uk/fsldownloads\_registration} and the Advanced Normalization Tools
 which can be downloaded here \url{https://stnava.github.io/ANTs/}.\\

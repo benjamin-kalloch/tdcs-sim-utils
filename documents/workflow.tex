@@ -10,8 +10,8 @@ The workflow is divided into five major parts:
     \item visualization and optionally
     \item \it{conductivity tensor estimation (optional)}.
 \end{enumerate}
-In this chapter, we describe the basic workflow for each of the mentioned stages of the pipeline. For every stage of
-the pipeline, we describe the expected input and which output will be generated in a tabular format. You can replace
+In this chapter, we describe the basic workflow for each of the mentioned stages of the workflow. For every stage of
+the workflow, we describe the expected input and which output will be generated in a tabular format. You can replace
 individual stages with your own workflow given that your workflow can handle the same input data and will create the
 same output data. The order in which we describe the individual stages is the recommended processing order.
 
@@ -22,7 +22,7 @@ same output data. The order in which we describe the individual stages is the re
     \hline
     \textbf{Output} & Labeled image with one distinct label per structure (ANALYZE file) \\ 
     \hline
-    \textbf{Tasks} & In this step of the pipeline, an individual head MR images is segmented and based on
+    \textbf{Tasks} & In this step of the workflow, an individual head MR images is segmented and based on
                      this segmentation, a labeled image is created. \\
     \hline
 \end{tabular}
@@ -32,12 +32,12 @@ same output data. The order in which we describe the individual stages is the re
 We have published an extended description of the segmentation workflow together with a user guide
 \footnote{https://figshare.com/s/f2e47b41e974ab67039b} before \cite{kalloch2018semi}.\\
 In the mentioned paper we describe the creation of surface-based head and torso models from individual 
-MR images. For our tES pipeline, only a sub-component of the described workflow namely the segmentation
+MR images. For our tES workflow, only a sub-component of the described workflow namely the segmentation
 of the head MR image is required. We perform the segmentation of the MR image of a
 subject's head  in the same manner as described in that paper. We are able to segment skin, skull
 and enclosed air cavities, cerebrospinal-fluid, gray matter, and white matter. Likewise, the segmentation
 images are post-processed in the same manner. Finally, the result of this segmentation workflow that
-we use further in our simulation pipeline is a labeled image that contains the desired structures.\par
+we use further in our simulation workflow is a labeled image that contains the desired structures.\par
 Note that other than described in the mentioned paper the topology of the segmented structure does not 
 necessarily need to adhere a strictly nested arrangement. With our image-based meshing approach we
 can create the volume mesh of structures of arbitrary arrangement, i.e. structures may intersect each
@@ -52,7 +52,7 @@ structures such as brain lesions after a stroke.
     \hline
     \textbf{Output} & Surface description of the electrode, (OFF file) \\ 
     \hline
-    \textbf{Tasks} & In this step of the pipeline, the electrodes modeled (shape \& location on scalp).
+    \textbf{Tasks} & In this step of the workflow, the electrodes modeled (shape \& location on scalp).
                      A surface description of the final electrodes is created.\\
     \hline
 \end{tabular}
@@ -180,7 +180,7 @@ simplification". Finally ``Export Mesh as" an OFF file under the File menu.
     \textbf{Output} & Tetrahedral volume mesh of the head with the electrodes mounted, boundaries of the
                       electrodes represented as ``Physical Surfaces" (GMSH file format v2). \\
     \hline
-    \textbf{Tasks} & In this step of the pipeline a tetrahedral volume mesh is generated using a combination
+    \textbf{Tasks} & In this step of the workflow a tetrahedral volume mesh is generated using a combination
                      of an image-based as well as surface-based meshing approach.\\
     \hline
 \end{tabular}
@@ -265,7 +265,7 @@ parameters that we typically use is predefined in the script file 'runMeshingToo
     \textbf{Output} & Electrical field strength (E), Electrical Current Density (J), Magnitude of
                       E and J. (OpenFOAM file format) \\ 
     \hline
-    \textbf{Tasks} & In this step of the pipeline we perform the electric field calculations. \\
+    \textbf{Tasks} & In this step of the workflow we perform the electric field calculations. \\
     \hline
 \end{tabular}
 
@@ -358,7 +358,7 @@ the following steps must be executed:
 The conductivity values of a simulation case can be enriched by information derived from DWI data of the subject.
 In order to incorporate this information we suggest a workflow based on MRTtrix3 for data preprocessing and ParaView
 for the computation of the conductivity tensors.\par
-The recommended processing pipeline in MRTrix3 is:
+The recommended processing workflow in MRTrix3 is:
 \begin{enumerate}
     \item \textbf{dwidenoise} - Perform denoising of the DWI data.
     \item \textbf{dwipreproc} - Motion \& eddy current correction.
