@@ -1,5 +1,5 @@
 \section{Setup}
-The pipeline employs two tools for the basic functionality: 1) The segmentation and post-processing of the segmentation images
+The workflow necessitates two tools for the basic functionality: 1) The segmentation and post-processing of the segmentation images
 are realized in the Medical Image Processing And Visualization tool $($MIPAV$)$ \cite{mcauliffe2001medical} with the Java Imaging
 and Science Toolkit $($JIST$)$ \cite{lucas2010java} and the CBSTools. Their setup will not be further discussed here as it has
 been described before\footnote{https://figshare.com/s/f2e47b41e974ab67039b}\cite{kalloch2018semi}. 2) The OpenFOAM software
@@ -21,23 +21,38 @@ The software pipeline is confirmed to work on Ubuntu 16.04 LTS and Ubuntu 18.04 
 work as well.
 
 \subsection{Meshing - CGAL, GMSH}
-We provide a custom application implementing the API of CGAL version 4.13. In Ubuntu 19.04 the correct version can be obtained
-using the apt package manager. For all other systems that may not provide the proper version we provide a docker file that creates
-a docker container which is capable of compiling and running the application.\\
-Furthermore, GMSH version 3.0.6 is required as well to export the volume mesh in the GMSH file format. Please download the source
-code from \url{http://gmsh.info/src/gmsh-3.0.6-source.tgz}. 
+We provide a custom application implementing the API of CGAL version 4.13.1. The version distributed with Ubuntu 19.04 is lacking
+an important fix. More recent versions of Ubuntu distribute a more recent version of CGAL, which may be incompatible with our meshing tool.
+For this reason, your must either compile CGAL 4.13.1 from the source or build a Docker container using the Docker file we provide (in the
+``docker" directory of \emph{meshheadmodel} sub-module). This Docker file creates a Docker
+container which is capable of compiling and running the meshing tool. To build the Docker container execute
+\newline
+\lstinline[basicstyle=\ttfamily]{docker build -t  cgal_and_gmsh_compiled_with_tbb_ubuntu1904 .}
+\newline
+Before doing so, make sure to place the (unpacked) source code directories of GMSH 4.3 (from: \url{http://gmsh.info/src/gmsh-4.3.0-source.tgz})
+and CGAL 4.13.1 (from: \url{https://github.com/CGAL/cgal/releases/download/releases%2FCGAL-4.13.1/CGAL-4.13.1.tar.xz}) into the ``docker"
+directory and name them \emph{gmsh} and \emph{cgal} respectively. They are required to compile the meshing tool and will be copied into the
+container and built subsequently, so you may delete them after building the container.\par
+You may use the \emph{docker\_compile.sh} script to recompile the meshing tool when you've made changes to the source code.\par
+When compiled in the container, the tool also must be launched from inside the container. You can do this by calling the \emph{docker\_run.sh}
+script which invokes the \emph{runMeshingTool.sh} script from inside the container. When using docker to run the tool consider that all
+paths within runMeshingtTool.sh (both input files and output files) must be specified according to the Docker environment (i.e. the shared folder)
+NOT according to the host machine. The best practice is to use the predefined input \& output directories and to use paths relative to the
+MeshHeadModel executable.\par
+Note that for both docker scripts you may have to adjust the variables \$BASE\_DIR and \$CONTAINER\_NAME if you use a path/name other then
+predefined in the file.
 
 \subsection{Electrode Modeling \& Positioning - Blender}
-The modeling and positioning of the electrodes in implemented as a plugin for the 3D modeling software Blender. The plugin is
+The modeling and positioning of the electrodes is implemented as a plugin for the 3D modeling software Blender. The plugin is
 confirmed to work up to version 2.79b which you can install using the apt package manager or download it from 
 \url{https://www.blender.org/download/Blender2.79/blender-2.79b-linux-glibc219-x86\_64.tar.bz2/}.
 
 \subsection{Test case setup \& Postprocessing - OpenFOAM}
 OpenFOAM version 6 provides the framework for the setup and execution of the simulation test cases. Since we extend the package
 with a custom solver application you will need the source code of OpenFOAM and compile it. You can download the source code of
-OpenFOAM 6 here \url{http://dl.openfoam.org/source/6}. For the post-processing functionality, especially ParaView version 5.4,
-please download the "Third Party" software package as well \url{http://dl.openfoam.org/source/6}. Again, since we provide
-custom plugins for ParaView you need the source code of ParaView and compile it.
+OpenFOAM 6 here: \url{https://github.com/OpenFOAM/OpenFOAM-6}. For the the post-processing functionality, especially ParaView
+version 5.4, please download the "Third Party" software package as well \url{https://github.com/OpenFOAM/ThirdParty-6}. Since we
+provide custom plugins for ParaView you need the source code of ParaView and compile it.
 
 \subsection{Processing of diffusion-weighted data}
 Our pipeline allows the use of diffusion-weighted (DWI) data for conductivity tensor estimation. To process DWI data, we use

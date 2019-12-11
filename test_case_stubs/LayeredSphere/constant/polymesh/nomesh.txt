@@ -1,0 +1,4 @@
+No geometry here. Please generate the geometry in GMSH fist using our Geo-file and the import it with the "gmshToFoam" utility.
+Due to storage restrictions we only provide the faceSets representing the electrodes.
+Note that these sets will only correspond to the correct triangle if you use an edge-length of 0.00629961
+for the sphere geometry in the geo-file.

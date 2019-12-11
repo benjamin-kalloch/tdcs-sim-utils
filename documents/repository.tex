@@ -36,7 +36,35 @@ In the next sections, when discussing the individual stages of the pipeline we w
     }
 
     ++(0,-0.5em)
+
+    \FTdir(root,remeshing,SurfaceRemesh) {
+        \FTdir(remeshing,remeshing-deploy,deploy){
+            \FTdir(remeshing-deploy,remeshing-input,input){}
+            \FTdir(remeshing-deploy,remeshing-ouput,output){}
+            \FTfile(remeshing-deploy,runMeshingTool.sh)
+        }
+        \FTdir(remeshing,remeshing-docker,docker){
+            \FTfile(remeshing-docker,Dockerfile)
+            \FTfile(remeshing-docker,docker\_compile.sh)
+            \FTfile(remeshing-docker,docker\_run.sh)
+        }
+        \FTfile(remeshing,CMakeLists.txt)
+        \FTfile(remeshing,remesh\_surface.cpp)
+    }
+
+    ++(0,-0.5em)
     
+    \FTdir(root,threelayeredspherescript,ThreeLayeredSphereModel){
+        \FTfile(threelayeredspherescript,tdcsSphereModel\_RushDriscoll.py)
+    }
+
+  };
+\end{tikzpicture}
+
+
+\begin{tikzpicture}%
+  \draw[color=black!60!white]
+  \FTdir(\FTroot,root,tDCS-Pipeline){
     \FTdir(root,tensorfilter,PVDiffusionToConductivityTensor){
         \FTfile(tensorfilter,CMakeLists.txt)
         \FTfile(tensorfilter,plugin.cmake)
@@ -48,7 +76,7 @@ In the next sections, when discussing the individual stages of the pipeline we w
     }
 
     ++(0,-0.5em)
-
+    
     \FTdir(root,tensorfilter,PVSymMatrixToGenMatrx){
         \FTfile(tensorfilter,CMakeLists.txt)
         \FTfile(tensorfilter,plugin.cmake)
@@ -58,13 +86,9 @@ In the next sections, when discussing the individual stages of the pipeline we w
         \FTfile(tensorfilter,vtkSymToGenMatrixFilter.h) 
         \FTfile(tensorfilter,vtkSymToGenMatrixFilter\_SM.xml) 
     }
-  };
-\end{tikzpicture}
 
-
-\begin{tikzpicture}%
-  \draw[color=black!60!white]
-  \FTdir(\FTroot,root,tDCS-Pipeline){
+    ++(0,-0.5em)
+    
     \FTdir(root,tensorfilter,PVSaveOFField){
         \FTfile(tensorfilter,CMakeLists.txt)
         \FTfile(tensorfilter,plugin.cmake)
@@ -174,5 +198,44 @@ In the next sections, when discussing the individual stages of the pipeline we w
             }
         }
     }
+  };
+\end{tikzpicture}
+
+\newpage
+
+\begin{tikzpicture}
+  \draw[color=black!60!white]
+  \FTdir(\FTroot,root,tDCS-Pipeline){
+    \FTdir(root,utils,Utils){
+      \FTdir(utils,cases,test\_case\_stubs){
+          \FTdir(cases,layeredsphere,LayeredSphere){
+            \FTdir(layeredsphere,layeredsphere-0,0\_orig){
+                \FTfile(layeredsphere-0,sigma)
+                \FTfile(layeredsphere-0,ElPot)
+            }
+            \FTdir(layeredsphere,layeredsphere-const,constant){
+                \FTdir(layeredsphere-const,layeredsphere-const-polymesh,polymesh){
+                    \FTfile(layeredsphere-const-polymesh,nomesh.txt)
+                    \FTdir(layeredsphere-const-polymesh,layeredsphere-const-polymesh-sets,sets){
+                         \FTfile(layeredsphere-const-polymesh-sets,electrode1)
+                         \FTfile(layeredsphere-const-polymesh-sets,electrode2)
+                    }
+                }
+            }
+            \FTdir(layeredsphere,layeredsphere-sys,system){
+                \FTfile(layeredsphere-sys,controlDict)
+                \FTfile(layeredsphere-sys,fvSolution)
+                \FTfile(layeredsphere-sys,fvSchemes)
+                \FTfile(layeredsphere-sys,setFieldsDict)
+                \FTfile(layeredsphere-sys,solverProperties)
+            }
+            \FTfile(layeredsphere,Allrun.sh)
+            \FTfile(layeredsphere,Allclean.sh)
+            \FTfile(layeredsphere,layered\_sphere\_model.geo)
+            \FTfile(layeredsphere,ElPot\_OpenFOAM\_isolines.png)
+            \FTfile(layeredsphere,readme.txt)
+          }
+        }
+     }
   };
 \end{tikzpicture}
